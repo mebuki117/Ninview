@@ -2,11 +2,15 @@ version = '0.1.0'
 
 import os
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import *
 import pygetwindow as gw
 from PIL import Image, ImageTk
 import pathlib
 import configparser
 from ahk import AHK
+from tkinter import messagebox
+import sys
 import functions
 
 config = configparser.ConfigParser()
@@ -34,11 +38,12 @@ notify_newversion = config.get('other', 'notify_newversion')
 
 root = tk.Tk()
 root.resizable(False, False)
-root.attributes('-topmost',alwaysontop)
+root.attributes('-topmost', alwaysontop)
 root.overrideredirect(borderless)
-root.attributes('-alpha',untranslucentpercentage/100)
+root.attributes('-alpha', untranslucentpercentage/100)
 root.geometry(f'0x0+{int(functions.get_display_values(functions.choose_display(display), 0))+show_x}+{int(functions.get_display_values(functions.choose_display(display), 1))+show_y}')
-root.title(f'Ninb Viewer v{version}')
+root.title(f'Ninview v{version}')
+root.iconbitmap(default='ender_pearl.ico')
 
 img_data = pathlib.Path(overlay_path)
 old_data = 0
@@ -51,6 +56,10 @@ ahk = AHK()
 
 if notify_newversion == 'True':
   functions.version_check(version)
+
+if not overlay_path:
+  messagebox.showerror('Ninb Viewer', 'オーバーレイのパスが指定されていません', detail='プログラムを終了します')
+  sys.exit()
 
 def refresh():
   if datacheck():

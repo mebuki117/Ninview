@@ -31,24 +31,35 @@ boaticon_width = config.getint('ninb', 'boaticon_width')
 boaticon_height = config.getint('ninb', 'boaticon_height')
 notify_newversion = config.get('other', 'notify_newversion')
 
-root = ThemedTk()
+# colors
+bg1 = '#55585a'
+bg2 = '#424242'
+fg = '#ffffff'
+abg = '#446e9e'
+tr = '#3c3f41'
+hl = '#3c3f41'
+sl = '#3c3f41'
+sty = '#55585a'
+
+root = ThemedTk(theme='black')
 style = ttk.Style()
-style.theme_use('black')
-style.configure('TLabel', background='#55585a', foreground='#ffffff')
-style.configure('TCombobox', fieldbackground= '#55585a', background= '#55585a', foreground='#ffffff')
-root.option_add("*TCombobox*Listbox*Background", '#55585a')
-root.option_add('*TCombobox*Listbox*Foreground', '#ffffff')
-root.option_add('*TCombobox*Listbox*selectBackground', '#55585a')
-root.option_add('*TCombobox*Listbox*selectForeground', '#ffffff')
+style.configure('TLabel', background=bg1, foreground=fg)
+style.configure('TCombobox', fieldbackground= f'{sty}', background= f'{sty}', foreground=fg)
+root.option_add("*TCombobox*Listbox*Background", f'{sty}')
+root.option_add('*TCombobox*Listbox*Foreground', f'{fg}')
+root.option_add('*TCombobox*Listbox*selectBackground', f'{sty}')
+root.option_add('*TCombobox*Listbox*selectForeground', f'{fg}')
 
 root.resizable(False, False)
+#root.attributes('-topmost', alwaysontop)
 root.geometry(f'382x275')
-root.title(f'Ninb Viewer Settings v{version}')
+root.title(f'Ninview Settings v{version}')
+root.iconbitmap(default='blaze_powder.ico')
 
 note = ttk.Notebook(root, width=382, height=275)
-tab1 = ttk.Frame(root)
-tab2 = ttk.Frame(root)
-tab3 = ttk.Frame(root)
+tab = []
+for l in range(3):
+  tab.append(ttk.Frame(root))
 
 if notify_newversion == 'True':
   functions.version_check(version)
@@ -96,132 +107,134 @@ def save():
     with open('config.ini', 'w') as f:
       config.write(f)
     
-    save_label.place(x=251, y=239)
+    for l in range(3):
+      save_label[l].place(x=251, y=214)
     root.after(3000, savetext_hide)
   except ValueError:
     messagebox.showerror('エラー', 'X座標、またはY座標に数値以外が入力されています', detail='保存は実行されていません')
 
 def savetext_hide():
-  save_label.place_forget()
+  for l in range(3):
+    save_label[l].place_forget()
 
 # tab 1
 choose_monitor_scale = tk.Scale(
-  tab1, from_=1, to=functions.get_display(), resolution=1, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[0], from_=1, to=functions.get_display(), resolution=1, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='モニター', sliderrelief='flat'
   )
 choose_monitor_scale.place(x=10, y=10)
 choose_monitor_scale.set(display)
 
-x_label = tk.Label(tab1, text='X:', width=1, background='#424242', foreground='#ffffff')
+x_label = tk.Label(tab[0], text='X:', width=1, background=bg2, foreground=fg)
 x_label.place(x=122, y=25)
 
-x_entry = tk.Entry(tab1, width=6, background='#55585a', foreground='#ffffff', borderwidth=0)
+x_entry = tk.Entry(tab[0], width=6, background=bg1, foreground=fg, borderwidth=0)
 x_entry.place(x=139, y=27)
 x_entry.insert(0, show_x)
 
-y_label = tk.Label(tab1, text='Y:', width=1, background='#424242', foreground='#ffffff')
+y_label = tk.Label(tab[0], text='Y:', width=1, background=bg2, foreground=fg)
 y_label.place(x=187, y=25)
 
-y_entry = tk.Entry(tab1, width=6, background='#55585a', foreground='#ffffff', borderwidth=0)
+y_entry = tk.Entry(tab[0], width=6, background=bg1, foreground=fg, borderwidth=0)
 y_entry.place(x=204, y=27)
 y_entry.insert(0, show_y)
 
 untranslucentpercentage_scale = tk.Scale(
-  tab1, from_=0, to=100, resolution=5, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[0], from_=0, to=100, resolution=5, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='不透明度', sliderrelief='flat'
   )
 untranslucentpercentage_scale.place(x=10, y=75)
 untranslucentpercentage_scale.set(untranslucentpercentage)
 
 refreshinterval_scale = tk.Scale(
-  tab1, from_=0, to=10, resolution=0.05, orient='horizontal',
-  length=244, background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[0], from_=0, to=10, resolution=0.05, orient='horizontal',
+  length=244, background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='更新間隔（秒）', sliderrelief='flat'
   )
 refreshinterval_scale.place(x=122, y=75)
 refreshinterval_scale.set(refreshinterval/1000)
 
 alwaysontop_var = tk.BooleanVar() ; alwaysontop_var.set(alwaysontop)
-alwaysontop_checkbox = tk.Checkbutton(tab1, text='常に最前列に表示', background='#424242', activebackground='#424242', foreground='#ffffff', activeforeground='#ffffff', selectcolor='#3c3f41', variable=alwaysontop_var)
+alwaysontop_checkbox = tk.Checkbutton(tab[0], text='常に最前列に表示', background=bg2, activebackground=bg2, foreground=fg, activeforeground=fg, selectcolor=sl, variable=alwaysontop_var)
 alwaysontop_checkbox.place(x=10, y=140)
 
 borderless_var = tk.BooleanVar() ; borderless_var.set(borderless)
-borderless_checkbox = tk.Checkbutton(tab1, text='ボーダーレス', background='#424242', activebackground='#424242', foreground='#ffffff', activeforeground='#ffffff', selectcolor='#3c3f41', variable=borderless_var)
+borderless_checkbox = tk.Checkbutton(tab[0], text='ボーダーレス', background=bg2, activebackground=bg2, foreground=fg, activeforeground=fg, selectcolor=sl, variable=borderless_var)
 borderless_checkbox.place(x=138, y=140)
 
 alwaysvisibility_var = tk.BooleanVar() ; alwaysvisibility_var.set(alwaysvisibility)
-alwaysvisibility_checkbox = tk.Checkbutton(tab1, text='常に表示', background='#424242', activebackground='#424242', foreground='#ffffff', activeforeground='#ffffff', selectcolor='#3c3f41', variable=alwaysvisibility_var)
+alwaysvisibility_checkbox = tk.Checkbutton(tab[0], text='常に表示', background=bg2, activebackground=bg2, foreground=fg, activeforeground=fg, selectcolor=sl, variable=alwaysvisibility_var)
 alwaysvisibility_checkbox.place(x=229, y=140)
 
-hotkey_label = tk.Label(tab1, text='ホットキー:', width=6, background='#424242', foreground='#ffffff')
+hotkey_label = tk.Label(tab[0], text='ホットキー:', width=6, background=bg2, foreground=fg)
 hotkey_label.place(x=10, y=175)
 
-hotkey_entry = tk.Entry(tab1, width=26, background='#55585a', foreground='#ffffff', borderwidth=0)
+hotkey_entry = tk.Entry(tab[0], width=26, background=bg1, foreground=fg, borderwidth=0)
 hotkey_entry.place(x=62, y=177)
 hotkey_entry.insert(0, hotkey)
 
 # tab 2
-overlay_path_entry = tk.Entry(tab2, width=51, readonlybackground='#55585a', foreground='#ffffff', relief='flat', state='normal')
+overlay_path_entry = tk.Entry(tab[1], width=51, readonlybackground=bg1, foreground=fg, relief='flat', state='normal')
 overlay_path_entry.place(x=10, y=14)
 overlay_path_entry.insert(0, overlay_path)
 overlay_path_entry.configure(state='readonly')
 
-button = tk.Button(tab2, width=4, text='参照', background='#55585a', foreground='#ffffff', activebackground='#446e9e', relief='flat', command=openfile)
+button = tk.Button(tab[1], width=4, text='参照', background=bg1, foreground=fg, activebackground=abg, relief='flat', command=openfile)
 button.place(x=330, y=11)
 
 choose_size_scale = tk.Scale(
-  tab2, from_=1, to=3, resolution=1, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[1], from_=1, to=3, resolution=1, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='Ninb サイズ', sliderrelief='flat'
   )
 choose_size_scale.place(x=10, y=47)
 choose_size_scale.set(ninbsize)
 
 row_scale = tk.Scale(
-  tab2, from_=1, to=5, resolution=1, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[1], from_=1, to=5, resolution=1, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='表示する行数', sliderrelief='flat'
   )
 row_scale.place(x=152, y=47)
 row_scale.set(row)
 
 detailsrow_scale = tk.Scale(
-  tab2, from_=1, to=3, resolution=1, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[1], from_=1, to=3, resolution=1, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='表示する詳細の行数', sliderrelief='flat'
   )
 detailsrow_scale.place(x=264, y=47)
 detailsrow_scale.set(detailsrow)
 
 header_var = tk.BooleanVar() ; header_var.set(header)
-header_checkbox = tk.Checkbutton(tab2, text='ヘッダーを表示', background='#424242', activebackground='#424242', foreground='#ffffff', activeforeground='#ffffff', selectcolor='#3c3f41', variable=header_var)
+header_checkbox = tk.Checkbutton(tab[1], text='ヘッダーを表示', background=bg2, activebackground=bg2, foreground=fg, activeforeground=fg, selectcolor=sl, variable=header_var)
 header_checkbox.place(x=10, y=112)
 
 detailsheader_var = tk.BooleanVar() ; detailsheader_var.set(detailsheader)
-detailsheader_checkbox = tk.Checkbutton(tab2, text='詳細ヘッダーを表示', background='#424242', activebackground='#424242', foreground='#ffffff', activeforeground='#ffffff', selectcolor='#3c3f41', variable=detailsheader_var)
+detailsheader_checkbox = tk.Checkbutton(tab[1], text='詳細ヘッダーを表示', background=bg2, activebackground=bg2, foreground=fg, activeforeground=fg, selectcolor=sl, variable=detailsheader_var)
 detailsheader_checkbox.place(x=116, y=112)
 
-boat_label = tk.Label(tab2, text='ボートアイコン:', width=9, background='#424242', foreground='#ffffff')
+boat_label = tk.Label(tab[1], text='ボートアイコン:', width=9, background=bg2, foreground=fg)
 boat_label.place(x=10, y=162)
 
 boat_option =['非表示', '左上', '右上']
-boat_combobox = ttk.Combobox(tab2, width=6, values=boat_option, textvariable=tk.StringVar(), state='readonly')
+boat_combobox = ttk.Combobox(tab[1], width=6, values=boat_option, textvariable=tk.StringVar(), state='readonly')
 boat_combobox.place(x=84, y=163)
 boat_combobox.set(boat_option[boaticonpos])
 
 boatwidth_scale = tk.Scale(
-  tab2, from_=20, to=40, resolution=1, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[1], from_=20, to=40, resolution=1, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='ボートアイコンの幅', sliderrelief='flat'
   )
 boatwidth_scale.place(x=152, y=147)
 boatwidth_scale.set(boaticon_width)
 
 boatheight_scale = tk.Scale(
-  tab2, from_=20, to=40, resolution=1, orient='horizontal',
-  background='#55585a', foreground='#ffffff', activebackground='#446e9e', troughcolor='#3c3f41', highlightcolor='#3c3f41', highlightthickness=0,
+  tab[1], from_=20, to=40, resolution=1, orient='horizontal',
+  background=bg1, foreground=fg, activebackground=abg, troughcolor=tr, highlightcolor=hl, highlightthickness=0,
   label='ボートアイコンの高さ', sliderrelief='flat'
   )
 boatheight_scale.place(x=264, y=147)
@@ -229,21 +242,24 @@ boatheight_scale.set(boaticon_height)
 
 # tab 3
 notify_newversion_var = tk.BooleanVar() ; notify_newversion_var.set(notify_newversion)
-notify_newversion_checkbox = tk.Checkbutton(tab3, text='新たなリリースがある場合に通知する', background='#424242', activebackground='#424242', foreground='#ffffff', activeforeground='#ffffff', selectcolor='#3c3f41', variable=notify_newversion_var)
+notify_newversion_checkbox = tk.Checkbutton(tab[2], text='新たなリリースがある場合に通知する', background=bg2, activebackground=bg2, foreground=fg, activeforeground=fg, selectcolor=sl, variable=notify_newversion_var)
 notify_newversion_checkbox.place(x=10, y=10)
 
 # tab 1 ~ 3
-save_label = tk.Label(text='保存しました！', width=9, background='#424242', foreground='#ffffff')
-save_label.place(x=251, y=239)
-save_label.place_forget()
+save_label = []
+save_button = []
+for l in range(3):
+  save_label.append(tk.Label(tab[l], text='保存しました！', width=9, background=bg2, foreground=fg))
+  save_label[l].place(x=251, y=214)
+  save_label[l].place_forget()
 
-save_button = tk.Button(text='保存', width=4, background='#55585a', foreground='#ffffff', activebackground='#446e9e', relief='flat', command=save)
-save_button.place(x=330, y=237)
+  save_button.append(tk.Button(tab[l], text='保存', width=4, background=bg1, foreground=fg, activebackground=abg, relief='flat', command=save))
+  save_button[l].place(x=330, y=212)
 
 # add tab
-note.add(tab1, text='ウインドウ')
-note.add(tab2, text='Ninb')
-note.add(tab3, text='その他')
+note.add(tab[0], text='ウインドウ')
+note.add(tab[1], text='Ninb')
+note.add(tab[2], text='その他')
 note.pack()
 
 if __name__ == '__main__':
