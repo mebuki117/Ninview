@@ -76,11 +76,11 @@ def main():
       boatimg = img.crop((img.width-114,4,img.width-94,24))
       boatimg = boatimg.resize((boaticon_width,boaticon_height))
     if 0 < detailsrow < 4:
-      if detailsheader:
+      if detailsheader == 'True':
         detailimg = img.crop((0,img.height-65,img.width,img.height-(3-detailsrow)*16))
       else:
         detailimg = img.crop((0,img.height-48,img.width,img.height-(3-detailsrow)*16))
-    if header:
+    if header == 'True':
       crop_y = 25
       crop_height = (row * 20) + 23 + detailimg.height
     else:
@@ -92,11 +92,11 @@ def main():
       boatimg = img.crop((img.width-114,4,img.width-94,24))
       boatimg = boatimg.resize((boaticon_width,boaticon_height))
     if 0 < detailsrow < 4:
-      if detailsheader:
+      if detailsheader == 'True':
         detailimg = img.crop((0,img.height-71,img.width,img.height-(3-detailsrow)*18))
       else:
         detailimg = img.crop((0,img.height-54,img.width,img.height-(3-detailsrow)*18))
-    if header:
+    if header == 'True':
       crop_y = 26
       crop_height = row * 23 + 25 + detailimg.height
     else:
@@ -108,11 +108,11 @@ def main():
       boatimg = img.crop((img.width-114,4,img.width-94,24))
       boatimg = boatimg.resize((boaticon_width,boaticon_height))
     if 0 < detailsrow < 4:
-      if detailsheader:
+      if detailsheader == 'True':
         detailimg = img.crop((0,img.height-106,img.width,img.height-(3-detailsrow)*28))
       else:
         detailimg = img.crop((0,img.height-84,img.width,img.height-(3-detailsrow)*28))
-    if header:
+    if header == 'True':
       crop_y = 27
       crop_height = row * 33 + 34 + detailimg.height
     else:
