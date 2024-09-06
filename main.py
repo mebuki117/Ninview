@@ -43,7 +43,7 @@ root.overrideredirect(borderless)
 root.attributes('-alpha', untranslucentpercentage/100)
 root.geometry(f'0x0+{int(functions.get_display_values(functions.choose_display(display), 0))+show_x}+{int(functions.get_display_values(functions.choose_display(display), 1))+show_y}')
 root.title(f'Ninview v{version}')
-root.iconbitmap(default='ender_pearl.ico')
+root.iconbitmap(default='ico/ender_pearl.ico')
 
 img_data = pathlib.Path(overlay_path)
 old_data = 0

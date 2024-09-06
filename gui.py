@@ -54,7 +54,7 @@ root.resizable(False, False)
 #root.attributes('-topmost', alwaysontop)
 root.geometry(f'382x275')
 root.title(f'Ninview Settings v{version}')
-root.iconbitmap(default='blaze_powder.ico')
+root.iconbitmap(default='ico/blaze_powder.ico')
 
 note = ttk.Notebook(root, width=382, height=275)
 tab = []
