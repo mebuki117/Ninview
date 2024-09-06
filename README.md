@@ -29,7 +29,7 @@ Ninjabrain botをカスタマイズして表示するツールです。
 #### 表示例
 | 例１ | 例２ |
 ----|---- 
-| <img src="https://github.com/user-attachments/assets/7e6ee577-cebe-4050-8a1c-5e90802009ee" width="100%" /> | <img src="https://github.com/user-attachments/assets/230b204b-4d9f-4984-bf88-b82a3bd3e205" width="100%" />  |
+| <img src="https://github.com/user-attachments/assets/19d2e08e-dc31-4568-8aba-e161c054982c" width="100%" /> | <img src="https://github.com/user-attachments/assets/230b204b-4d9f-4984-bf88-b82a3bd3e205" width="100%" />  |
 | 計算結果を3行、詳細情報を2行表示 | ヘッダーを非表示して、計算結果と詳細情報を1行、ボートアイコンを表示。ボーダーレス |
 
 #### 設定ウインドウ
