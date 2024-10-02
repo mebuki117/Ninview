@@ -1,3 +1,5 @@
+### ⚠Ninjabrai botのAPIを使用した、新しいリリースがあります -> [Ninview+](https://github.com/mebuki117/Ninview-Plus)
+
 ## 説明
 Ninjabrain botをカスタマイズして表示するツールです。  
 シングルモニターでNinbを表示する場所がない場合などに適しています。
